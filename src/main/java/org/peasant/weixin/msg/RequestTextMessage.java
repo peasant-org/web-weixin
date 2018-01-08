@@ -6,10 +6,16 @@
 package org.peasant.weixin.msg;
 
 /**
- *
+ * <p>文本消息</p>
+ * Content 文本消息内容
  * @author raymond
  */
 public class RequestTextMessage extends RequestMessageBase{
+
+    public RequestTextMessage(String content, String toUserName, String fromUserName, long createTime, long msgId) {
+        super(toUserName, fromUserName, createTime, msgId);
+        this.content = content;
+    }
     public static final String TYPE = "text";
     private final String msgType= TYPE;
 

@@ -6,9 +6,103 @@
 package org.peasant.weixin.msg;
 
 /**
+ * <p>地理位置消息</p>
+ * Location_X 地理位置维度 Location_Y 地理位置经度 \p Scale 地图缩放大小 Label 地理位置信息
  *
  * @author raymond
  */
-public class RequestMessageLocation  extends RequestMessageBase{
+public class RequestMessageLocation extends RequestMessageBase {
+
+    public static final String TYPE = "text";
     
+    private String location_X;
+    
+    private String location_Y;
+    
+        private String scale;
+    private String label;
+
+    public RequestMessageLocation(String location_X, String location_Y, String scale, String label, String toUserName, String fromUserName, long createTime, long msgId) {
+        super(toUserName, fromUserName, createTime, msgId);
+        this.location_X = location_X;
+        this.location_Y = location_Y;
+        this.scale = scale;
+        this.label = label;
+    }
+
+    /**
+     * Get the value of label
+     *
+     * @return the value of label
+     */
+    public String getLabel() {
+        return label;
+    }
+
+    /**
+     * Set the value of label
+     *
+     * @param label new value of label
+     */
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+
+    /**
+     * Get the value of scale
+     *
+     * @return the value of scale
+     */
+    public String getScale() {
+        return scale;
+    }
+
+    /**
+     * Set the value of scale
+     *
+     * @param scale new value of scale
+     */
+    public void setScale(String scale) {
+        this.scale = scale;
+    }
+
+
+    /**
+     * Get the value of location_X
+     *
+     * @return the value of location_X
+     */
+    public String getLocation_X() {
+        return location_X;
+    }
+
+    /**
+     * Set the value of location_X
+     *
+     * @param location_X new value of location_X
+     */
+    public void setLocation_X(String location_X) {
+        this.location_X = location_X;
+    }
+
+
+    /**
+     * Get the value of location_Y
+     *
+     * @return the value of location_Y
+     */
+    public String getLocation_Y() {
+        return location_Y;
+    }
+
+    /**
+     * Set the value of location_Y
+     *
+     * @param location_Y new value of location_Y
+     */
+    public void setLocation_Y(String location_Y) {
+        this.location_Y = location_Y;
+    }
+
 }
