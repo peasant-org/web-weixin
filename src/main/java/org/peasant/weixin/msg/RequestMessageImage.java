@@ -11,9 +11,9 @@ package org.peasant.weixin.msg;
  *
  * @author raymond
  */
-public class RequestImageMessage extends RequestMessageMediaBase {
+public class RequestMessageImage extends RequestMessageMediaBase {
 
-    public RequestImageMessage(String url, String mediaID, String toUserName, String fromUserName, long createTime, long msgId) {
+    public RequestMessageImage(String url, String mediaID, String toUserName, String fromUserName, long createTime, long msgId) {
         super(mediaID, toUserName, fromUserName, createTime, msgId);
         this.url = url;
     }

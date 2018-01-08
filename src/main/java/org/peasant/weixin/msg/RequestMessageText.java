@@ -10,9 +10,9 @@ package org.peasant.weixin.msg;
  * Content 文本消息内容
  * @author raymond
  */
-public class RequestTextMessage extends RequestMessageBase{
+public class RequestMessageText extends RequestMessageBase{
 
-    public RequestTextMessage(String content, String toUserName, String fromUserName, long createTime, long msgId) {
+    public RequestMessageText(String content, String toUserName, String fromUserName, long createTime, long msgId) {
         super(toUserName, fromUserName, createTime, msgId);
         this.content = content;
     }
