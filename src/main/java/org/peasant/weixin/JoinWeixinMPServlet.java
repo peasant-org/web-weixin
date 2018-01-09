@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author raymond
  */
-@javax.servlet.annotation.WebServlet(name = "JoinWeixinPPServlet", urlPatterns = {"/wxMsgEvent"},
+@javax.servlet.annotation.WebServlet(name = "JoinWeixinPPServlet", urlPatterns = {"/weixin"},
         initParams = {
             @WebInitParam(name = "token", value = "whatever")},
         description = "第一次接入微信公众平台，响应微信服务器发来的token验证，以接入平台")
