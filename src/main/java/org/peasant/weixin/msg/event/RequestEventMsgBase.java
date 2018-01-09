@@ -17,7 +17,7 @@ public class RequestEventMsgBase extends RequestMessageBase {
 
     private String eventType;
 
-    public RequestEventMsgBase(String eventType, String toUserName, String fromUserName, long createTime, long msgId) {
+    protected RequestEventMsgBase(String eventType, String toUserName, String fromUserName, long createTime, long msgId) {
         super(toUserName, fromUserName, createTime, msgId);
         this.eventType = eventType;
     }
