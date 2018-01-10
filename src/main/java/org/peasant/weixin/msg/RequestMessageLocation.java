@@ -6,24 +6,25 @@
 package org.peasant.weixin.msg;
 
 /**
- * <p>地理位置消息</p>
+ * <p>
+ * 地理位置消息</p>
  * Location_X 地理位置维度 Location_Y 地理位置经度 \p Scale 地图缩放大小 Label 地理位置信息
  *
  * @author raymond
  */
 public class RequestMessageLocation extends RequestMessageBase {
 
-    public static final String TYPE = "text";
-    
+    public static final String TYPE = RequestMessageBase.LOCATION;
+
     private String location_X;
-    
+
     private String location_Y;
-    
-        private String scale;
+
+    private String scale;
     private String label;
 
     public RequestMessageLocation(String location_X, String location_Y, String scale, String label, String toUserName, String fromUserName, long createTime, long msgId) {
-        super(toUserName, fromUserName, createTime, msgId);
+        super(TYPE, toUserName, fromUserName, createTime, msgId);
         this.location_X = location_X;
         this.location_Y = location_Y;
         this.scale = scale;
@@ -48,7 +49,6 @@ public class RequestMessageLocation extends RequestMessageBase {
         this.label = label;
     }
 
-
     /**
      * Get the value of scale
      *
@@ -67,7 +67,6 @@ public class RequestMessageLocation extends RequestMessageBase {
         this.scale = scale;
     }
 
-
     /**
      * Get the value of location_X
      *
@@ -85,7 +84,6 @@ public class RequestMessageLocation extends RequestMessageBase {
     public void setLocation_X(String location_X) {
         this.location_X = location_X;
     }
-
 
     /**
      * Get the value of location_Y

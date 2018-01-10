@@ -13,7 +13,7 @@ package org.peasant.weixin.msg.event;
 public class RequestEventMsgReportLocation extends RequestEventMsgBase {
 
     public RequestEventMsgReportLocation(double latitude, double longitude, String precision, String toUserName, String fromUserName, long createTime, long msgId) {
-        super(toUserName, fromUserName, createTime, msgId);
+        super(RequestEventMsgBase.EVENT_LOCATION, toUserName, fromUserName, createTime, msgId);
         this.latitude = latitude;
         this.longitude = longitude;
         this.precision = precision;

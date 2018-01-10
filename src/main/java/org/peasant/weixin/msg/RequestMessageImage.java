@@ -14,11 +14,11 @@ package org.peasant.weixin.msg;
 public class RequestMessageImage extends RequestMessageMediaBase {
 
     public RequestMessageImage(String url, String mediaID, String toUserName, String fromUserName, long createTime, long msgId) {
-        super(mediaID, toUserName, fromUserName, createTime, msgId);
+        super(TYPE, mediaID, toUserName, fromUserName, createTime, msgId);
         this.url = url;
     }
 
-    public static final String TYPE = "image";
+    public static final String TYPE = RequestMessageMediaBase.IMAGE;
     private String url;
 
     /**

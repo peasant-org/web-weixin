@@ -21,7 +21,7 @@ public class RequestEventMsgView extends RequestEventMsgBase {
      * @param msgId
      */
     public RequestEventMsgView(String eventKey, String toUserName, String fromUserName, long createTime, long msgId) {
-        super(toUserName, fromUserName, createTime, msgId);
+        super(RequestEventMsgBase.EVENT_VIEW, toUserName, fromUserName, createTime, msgId);
         this.eventKey = eventKey;
     }
 

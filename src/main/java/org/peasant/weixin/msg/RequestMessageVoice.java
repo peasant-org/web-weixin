@@ -6,24 +6,23 @@
 package org.peasant.weixin.msg;
 
 /**
- * <p>语音消息</p>
- * Format 语音格式，如amr，speex等
- * Recognition语音识别结果，UTF8编码
+ * <p>
+ * 语音消息</p>
+ * Format 语音格式，如amr，speex等 Recognition语音识别结果，UTF8编码
+ *
  * @author raymond
  */
 public class RequestMessageVoice extends RequestMessageMediaBase {
 
+    public static final String TYPE = VOICE;
+
+    private String recognition;
+
     public RequestMessageVoice(String recognition, String format, String mediaID, String toUserName, String fromUserName, long createTime, long msgId) {
-        super(mediaID, toUserName, fromUserName, createTime, msgId);
+        super(TYPE, mediaID, toUserName, fromUserName, createTime, msgId);
         this.recognition = recognition;
         this.format = format;
     }
-
-
-
-    public static final String TYPE = "voice";
-
-    private String recognition;
 
     /**
      * Get the value of recognition

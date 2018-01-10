@@ -10,9 +10,9 @@ package org.peasant.weixin.msg.event;
  * @author raymond
  */
 public class RequestEventMsgClick extends RequestEventMsgBase {
-    
+
     public RequestEventMsgClick(String toUserName, String fromUserName, long createTime, long msgId) {
-        super(eventType, toUserName, fromUserName, createTime, msgId);
+        super(RequestEventMsgBase.EVENT_CLICK, toUserName, fromUserName, createTime, msgId);
     }
-    
+
 }

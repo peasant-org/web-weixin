@@ -11,14 +11,20 @@ import org.peasant.weixin.msg.RequestMessageBase;
  *
  * @author raymond
  */
-public class RequestEventMsgBase extends RequestMessageBase {
+public abstract class RequestEventMsgBase extends RequestMessageBase {
 
-    public final static String TYPE = "event";
+    public final static String EVENT_CLICK = "CLICK";
+    public final static String EVENT_VIEW = "VIEW";
+    public final static String EVENT_LOCATION = "LOCATION";
+    public final static String EVENT_SUBSCRIBE = "subcribe";
+    public final static String EVENT_UNSUBSCRIBE = "unsubcribe";
+
+    public final static String TYPE = EVENT;
 
     private String eventType;
 
     protected RequestEventMsgBase(String eventType, String toUserName, String fromUserName, long createTime, long msgId) {
-        super(toUserName, fromUserName, createTime, msgId);
+        super(TYPE, toUserName, fromUserName, createTime, msgId);
         this.eventType = eventType;
     }
 

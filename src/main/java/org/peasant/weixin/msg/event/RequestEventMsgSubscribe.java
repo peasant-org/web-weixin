@@ -14,7 +14,7 @@ public class RequestEventMsgSubscribe extends RequestEventMsgBase {
     public static final String EVENT_TYPE = "subscribe";
 
     public RequestEventMsgSubscribe(String toUserName, String fromUserName, long createTime, long msgId) {
-        super(toUserName, fromUserName, createTime, msgId);
+        super(RequestEventMsgBase.EVENT_SUBSCRIBE,toUserName, fromUserName, createTime, msgId);
     }
 
 }

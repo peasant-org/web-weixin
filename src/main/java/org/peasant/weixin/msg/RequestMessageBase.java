@@ -8,7 +8,8 @@ package org.peasant.weixin.msg;
 import java.util.Date;
 
 /**
- * <p>推送消息基类</p>
+ * <p>
+ * 推送消息基类</p>
  * ToUserName开发者微信号 FromUserName 发送方帐号（一个OpenID） CreateTime 消息创建时间 （整型） MsgType
  * text 1、关于重试的消息排重，推荐使用msgid排重。
  * 2、微信服务器在五秒内收不到响应会断掉连接，并且重新发起请求，总共重试三次。假如服务器无法保证在五秒内处理并回复，
@@ -21,17 +22,27 @@ import java.util.Date;
  */
 public abstract class RequestMessageBase {
 
-    protected RequestMessageBase(String toUserName, String fromUserName, long createTime, long msgId) {
+    public static final String IMAGE = "image";
+    public static final String TEXT = "text";
+    public static final String SHORTVIDEO = "shortvideo";
+    public static final String VIDEO = "video";
+    public static final String LOCATION = "location";
+    public static final String LINK = "link";
+    public static final String VOICE = "voice";
+    public static final String EVENT = "event";
+
+    protected RequestMessageBase(String type, String toUserName, String fromUserName, long createTime, long msgId) {
         this.toUserName = toUserName;
         this.fromUserName = fromUserName;
         this.createTime = createTime;
         this.msgId = msgId;
+        this.msgType = type;
     }
-    public static final String TYPE = "base";
+
     private String toUserName;
     private String fromUserName;
     private long createTime;
-    private final String msgType = TYPE;
+    private final String msgType;
     private long msgId;
 
     public String getToUserName() {
