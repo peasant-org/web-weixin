@@ -20,7 +20,7 @@ public class WeixinUtils {
     }
 
     public static String getAccessToken(String appId) {
-
+        return AccessTokenCentralPool.getAccessToken(WeixinMPconfig.getMPconfigByAppId(appId));
     }
 
 }

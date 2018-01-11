@@ -13,13 +13,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * 实现从/mp_config.properties读取公众号开发者参数的配置信息
  *
  * @author raymond
  */
 public class WeixinMPconfig implements IWeixinMPConfig {
 
     public static final String APPID_KEY = "AppID";
-    public static final String AppSecret_KEY = "AppSecret";
+    public static final String APPSECRET_KEY = "AppSecret";
     public static final String TOKEN_KEY = "Token";
     public static final String ENCODINGAESKEY_KEY = "EncodingAESKey";
     public static final String ENCODINGTYPE_KEY = "MsgEncodingType";
@@ -58,7 +59,7 @@ public class WeixinMPconfig implements IWeixinMPConfig {
                     switch (ks[1]) {
                         case APPID_KEY:
                             cfg.setAppID(v);
-                        case AppSecret_KEY:
+                        case APPSECRET_KEY:
                             cfg.setAppSecret(v);
                         case TOKEN_KEY:
                             cfg.setToken(v);
