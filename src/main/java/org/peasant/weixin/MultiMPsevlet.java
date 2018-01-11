@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * 在公众号开发配置里的服务器URL配置成url_to_your_servlet_path/公众号的微信号
  * @author raymond
  */
-@javax.servlet.annotation.WebServlet(name = "JoinWeixinPPServlet", urlPatterns = {"/weixins/*"},
+@javax.servlet.annotation.WebServlet(name = "MultiMPsevlet", urlPatterns = {"/weixins/*"},
         initParams = {
             @WebInitParam(name = "token", value = "whatever")},
         description = "第一次接入微信公众平台，响应微信服务器发来的token验证，以接入平台")
