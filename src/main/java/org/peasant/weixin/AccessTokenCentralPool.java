@@ -42,8 +42,8 @@ public class AccessTokenCentralPool {
             if (null != rs) {
                 cache.put(cfg.getAppId(), (String) rs[0]);
             }
-            t.schedule(new AccessTokenRefresher(cfg), 0, (long) rs[1]);
-            ;
+            t.schedule(new AccessTokenRefresher(cfg), (long) rs[1] * 1000 - 5000, (long) rs[1] * 1000 - 5000);
+
         }
 
         return at;
