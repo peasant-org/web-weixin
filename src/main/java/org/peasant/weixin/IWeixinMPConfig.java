@@ -77,5 +77,11 @@ public interface IWeixinMPConfig {
      * @return 消息加解密方式
      */
     MsgEncodingType getEncodingType();
+    
+        /**
+     *
+     * @return 消息以JSON Object定义的菜单
+     */
+    String getMenuJSON();
 
 }

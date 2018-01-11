@@ -59,9 +59,12 @@ public class AccessTokenCentralPool {
         String url = ACCESSTOKEN_API_URL + "?" + ACCESSTOKEN_PARAM + "&appid=" + cfg.getAppId() + "&secret=" + cfg.getAppSecret();
         String result = HTTP.sendGet(url, null, CHARSET);
         if (null != result && !"".equals(result)) {
-            JsonReader jr = Json.createReader(new StringReader(result));
-            JsonObject jo = jr.readObject();
-            if (jo.containsKey(ACCESSTOKEN_KEY)) {
+            JsonObject jo;
+            try (JsonReader jr = Json.createReader(new StringReader(result))) {
+                jo = jr.readObject();
+                jr.close();
+            }
+            if (null!=jo && jo.containsKey(ACCESSTOKEN_KEY)) {
                 return new Object[]{jo.getString(ACCESSTOKEN_KEY), jo.getInt(ACCESSTOKEN_EXPIRES_KEY)};
             }
         }

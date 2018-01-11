@@ -6,11 +6,15 @@
 package org.peasant.weixin;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 /**
  * 实现从/mp_config.properties读取公众号开发者参数的配置信息
@@ -24,6 +28,7 @@ public class WeixinMPconfig implements IWeixinMPConfig {
     public static final String TOKEN_KEY = "Token";
     public static final String ENCODINGAESKEY_KEY = "EncodingAESKey";
     public static final String ENCODINGTYPE_KEY = "MsgEncodingType";
+    public static final String MENU_KEY = "Menu";
     private static Properties configs;
     private static HashMap<String, WeixinMPconfig> configmapByID = new HashMap();
     private static HashMap<String, WeixinMPconfig> configmapByAppId = new HashMap();
@@ -62,15 +67,26 @@ public class WeixinMPconfig implements IWeixinMPConfig {
                             break;
                         case APPSECRET_KEY:
                             cfg.setAppSecret(v);
-                             break;
-                       case TOKEN_KEY:
+                            break;
+                        case TOKEN_KEY:
                             cfg.setToken(v);
-                             break;
-                       case ENCODINGAESKEY_KEY:
+                            break;
+                        case ENCODINGAESKEY_KEY:
                             cfg.setEncodingAESKey(v);
-                             break;
-                       case ENCODINGTYPE_KEY:
+                            break;
+                        case ENCODINGTYPE_KEY:
                             cfg.setEncodingType(MsgEncodingType.getMsgEncodingType(v));
+                            break;
+                        case MENU_KEY:
+                            JsonObject jo;
+
+                            try (JsonReader jr = Json.createReader(WeixinMPconfig.class.getResourceAsStream(v))) {
+                                jo = jr.readObject();
+                                jr.close();
+                            }
+                            if (null != jo) {
+                                cfg.setMenuJSON(jo.toString());
+                            }
                     }
                     configmapByID.put(ks[0], cfg);
                     if (cfg.getAppId() != null && !cfg.getAppId().equals("")) {
@@ -109,6 +125,17 @@ public class WeixinMPconfig implements IWeixinMPConfig {
     private String token;
     private String encodingAESKey;
     private MsgEncodingType encodingType;
+
+    private String menuJSON;
+
+    @Override
+    public String getMenuJSON() {
+        return menuJSON;
+    }
+
+    public void setMenuJSON(String menuJSON) {
+        this.menuJSON = menuJSON;
+    }
 
     @Override
     public MsgEncodingType getEncodingType() {

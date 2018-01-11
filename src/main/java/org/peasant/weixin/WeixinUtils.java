@@ -5,15 +5,25 @@
  */
 package org.peasant.weixin;
 
+import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.servlet.http.HttpServletRequest;
+import org.peasant.net.HTTP;
 
 /**
  *
  * @author raymond
  */
 public class WeixinUtils {
+
+    public static final String WEIXIN_API_URL = "https://api.weixin.qq.com/cgi-bin";
+    public static final String ACCESSTOKEN_API_URL = "https://api.weixin.qq.com/cgi-bin/token";
+    public static final String CHARSET = "UTF-8";
+    public static final String MENU_CREATE_URL_PREFIX = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
 
     public static String getTokenByAppId(String appId) {
         return WeixinMPconfig.getMPconfigByAppId(appId).getToken();
@@ -25,6 +35,36 @@ public class WeixinUtils {
 
     public static String getAccessToken(String appId) {
         return AccessTokenCentralPool.getAccessToken(WeixinMPconfig.getMPconfigByAppId(appId));
+    }
+
+    public static boolean createMenuFor(String mpId) {
+        return createMenu(WeixinMPconfig.getMPconfig(mpId).getAppId(), WeixinMPconfig.getMPconfig(mpId).getMenuJSON());
+
+    }
+
+    public static boolean createMenu(String appId) {
+
+        return createMenu(appId, WeixinMPconfig.getMPconfigByAppId(appId).getMenuJSON());
+    }
+
+    public static boolean createMenu(String appId, String jsonmenu) {
+        String r = HTTP.sendPost(MENU_CREATE_URL_PREFIX + getAccessToken(appId), null, CHARSET);
+        JsonObject j = convertStr2jsonObject(r);
+        Logger.getLogger(WeixinUtils.class.getName()).log(Level.INFO, "为APPID:{}创建菜单, 执行结果:{}", new Object[]{appId, j.toString()});
+        return 0 == j.getInt("errcode");
+    }
+
+    public static JsonObject convertStr2jsonObject(String str) {
+        if (null == str) {
+            return null;
+        }
+        JsonObject jo;
+        try (JsonReader jr = Json.createReader(new StringReader(str))) {
+            jo = jr.readObject();
+            jr.close();
+        }
+        return jo;
+
     }
 
     public static boolean checkSignature(String token, HttpServletRequest req) {
