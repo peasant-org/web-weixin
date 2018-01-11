@@ -59,13 +59,17 @@ public class WeixinMPconfig implements IWeixinMPConfig {
                     switch (ks[1]) {
                         case APPID_KEY:
                             cfg.setAppID(v);
+                            break;
                         case APPSECRET_KEY:
                             cfg.setAppSecret(v);
-                        case TOKEN_KEY:
+                             break;
+                       case TOKEN_KEY:
                             cfg.setToken(v);
-                        case ENCODINGAESKEY_KEY:
+                             break;
+                       case ENCODINGAESKEY_KEY:
                             cfg.setEncodingAESKey(v);
-                        case ENCODINGTYPE_KEY:
+                             break;
+                       case ENCODINGTYPE_KEY:
                             cfg.setEncodingType(MsgEncodingType.getMsgEncodingType(v));
                     }
                     configmapByID.put(ks[0], cfg);

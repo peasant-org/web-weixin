@@ -31,13 +31,13 @@ public class MultiMPsevlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         //super.doGet(req, resp); //To change body of generated methods, choose Tools | Templates.此句必须删除，否则造成失败
-        String signature = req.getParameter("signature");
-        String timestamp = req.getParameter("timestamp");
-        String nonce = req.getParameter("nonce");
+//        String signature = req.getParameter("signature");
+//        String timestamp = req.getParameter("timestamp");
+//        String nonce = req.getParameter("nonce");
         String echostr = req.getParameter("echostr");
         String gid = req.getPathInfo();
         if (gid != null) {
-            gid = gid.substring(1, gid.length() - 1);
+            gid = gid.substring(1, gid.length());
             if(WeixinUtils.checkSignature(WeixinUtils.getToken(gid), req)){
                 
                 resp.setCharacterEncoding("UTF-8");

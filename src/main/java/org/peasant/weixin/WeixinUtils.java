@@ -37,10 +37,7 @@ public class WeixinUtils {
             String cs;
             cs = MessageDiegetor.getSortedSHA1(token, timestamp, nonce);
 
-            if (cs.equals(signature)) {
-                return true;
-            }
-            return false;
+            return signature.equals(cs);
         } catch (AesException ex) {
             Logger.getLogger(JoinWeixinMPServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
