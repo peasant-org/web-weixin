@@ -18,7 +18,7 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
-import org.peasant.net.HTTP;
+import org.peasant.util.web.HttpUtils;
 import org.peasant.util.web.ContentTypes;
 import org.xml.sax.SAXException;
 
@@ -32,6 +32,8 @@ public class WeixinUtils {
     public static final String ACCESSTOKEN_API_URL = "https://api.weixin.qq.com/cgi-bin/token";
     public static final String CHARSET = "UTF-8";
     public static final String MENU_CREATE_URL_PREFIX = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
+    public static final String MENU_GET_URL_PREFIX = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=";
+    public static final String MENU_DELETE_URL_PREFIX = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=";
 
     public static String getTokenByAppId(String appId) {
         return WeixinMPconfig.getMPconfigByAppId(appId).getToken();
@@ -41,9 +43,27 @@ public class WeixinUtils {
         return WeixinMPconfig.getMPconfig(id).getToken();
     }
 
-    public static String getAccessToken(String appId) {
+    public static String getAccessTokenByAppID(String appId) {
         return AccessTokenCentralPool.getAccessToken(WeixinMPconfig.getMPconfigByAppId(appId));
     }
+
+    public static String getAccessToken(String mpId) {
+        return AccessTokenCentralPool.getAccessToken(WeixinMPconfig.getMPconfig(mpId));
+    }
+
+    public static String getMenuFor(String mpId) {
+        return HttpUtils.sendGet(MENU_CREATE_URL_PREFIX + getAccessToken(mpId), null, CHARSET);
+    }
+
+    public static String getMenuForAppId(String appId) {
+        return HttpUtils.sendGet(MENU_CREATE_URL_PREFIX + getAccessTokenByAppID(appId), null, CHARSET);
+    }
+
+    public static String deleteMenuFor(String mpId) {
+        return HttpUtils.sendGet(MENU_DELETE_URL_PREFIX + getAccessToken(mpId), null, CHARSET);
+    }
+
+
 
     public static boolean createMenuFor(String mpId) {
         return createMenu(WeixinMPconfig.getMPconfig(mpId).getAppId(), WeixinMPconfig.getMPconfig(mpId).getMenuJSON());
@@ -61,12 +81,12 @@ public class WeixinUtils {
 
         String r = "";
         try {
-            r = HTTP.sendPost3(MENU_CREATE_URL_PREFIX + getAccessToken(appId), null, new ByteArrayInputStream(jsonmenu.getBytes(CHARSET)), null, CHARSET);
+            r = HttpUtils.sendPost3(MENU_CREATE_URL_PREFIX + getAccessTokenByAppID(appId), null, new ByteArrayInputStream(jsonmenu.getBytes(CHARSET)), null, CHARSET);
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(WeixinUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
         JsonObject j = convertStr2jsonObject(r);
-        Logger.getLogger(WeixinUtils.class.getName()).log(Level.INFO, "为APPID:{}创建菜单, 执行结果:{}", new Object[]{appId, j.toString()});
+        Logger.getLogger(WeixinUtils.class.getName()).log(Level.INFO, "为APPID:{0}创建菜单, 执行结果:{1}", new Object[]{appId, j.toString()});
         return 0 == j.getInt("errcode");
     }
 
