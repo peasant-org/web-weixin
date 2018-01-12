@@ -5,14 +5,22 @@
  */
 package org.peasant.weixin;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.ParserConfigurationException;
 import org.peasant.net.HTTP;
+import org.peasant.util.web.ContentTypes;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -48,10 +56,27 @@ public class WeixinUtils {
     }
 
     public static boolean createMenu(String appId, String jsonmenu) {
-        String r = HTTP.sendPost(MENU_CREATE_URL_PREFIX + getAccessToken(appId), null, CHARSET);
+        Map<String, String> ps = new HashMap<>();
+        ps.put("Content-Type", ContentTypes.JSON);
+
+        String r = "";
+        try {
+            r = HTTP.sendPost3(MENU_CREATE_URL_PREFIX + getAccessToken(appId), null, new ByteArrayInputStream(jsonmenu.getBytes(CHARSET)), null, CHARSET);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(WeixinUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
         JsonObject j = convertStr2jsonObject(r);
         Logger.getLogger(WeixinUtils.class.getName()).log(Level.INFO, "为APPID:{}创建菜单, 执行结果:{}", new Object[]{appId, j.toString()});
         return 0 == j.getInt("errcode");
+    }
+
+    public static void parseMsgXml(String xml) {
+        try {
+            String msgType = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(xml.getBytes())).getElementsByTagName("MsgType").item(0).getNodeValue();
+
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            Logger.getLogger(WeixinUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static JsonObject convertStr2jsonObject(String str) {

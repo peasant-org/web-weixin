@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Singleton;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -42,7 +44,8 @@ public class AccessTokenCentralPool {
             if (null != rs) {
                 cache.put(cfg.getAppId(), (String) rs[0]);
             }
-            t.schedule(new AccessTokenRefresher(cfg), (long) rs[1] * 1000 - 5000, (long) rs[1] * 1000 - 5000);
+            long t = ((Integer) rs[1]).longValue();
+            t.schedule(new AccessTokenRefresher(cfg), t, t);
 
         }
 
@@ -64,7 +67,8 @@ public class AccessTokenCentralPool {
                 jo = jr.readObject();
                 jr.close();
             }
-            if (null!=jo && jo.containsKey(ACCESSTOKEN_KEY)) {
+            if (null != jo && jo.containsKey(ACCESSTOKEN_KEY)) {
+                Logger.getLogger(AccessTokenCentralPool.class.getName()).log(Level.INFO, "获取AccessToken,Appid:{}, 执行结果:{}", new Object[]{cfg.getAppId(), result});
                 return new Object[]{jo.getString(ACCESSTOKEN_KEY), jo.getInt(ACCESSTOKEN_EXPIRES_KEY)};
             }
         }
