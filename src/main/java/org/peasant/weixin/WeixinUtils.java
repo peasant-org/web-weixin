@@ -21,9 +21,17 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.ParserConfigurationException;
+import org.peasant.util.Utils;
 import org.peasant.util.web.HttpUtils;
 import org.peasant.util.web.ContentTypes;
 import org.peasant.weixin.msg.RequestMessageBase;
+import org.peasant.weixin.msg.RequestMessageImage;
+import org.peasant.weixin.msg.RequestMessageLocation;
+import org.peasant.weixin.msg.RequestMessageShortVideo;
+import org.peasant.weixin.msg.RequestMessageText;
+import org.peasant.weixin.msg.RequestMessageURLink;
+import org.peasant.weixin.msg.RequestMessageVideo;
+import org.peasant.weixin.msg.event.RequestEventMsgBase;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
@@ -93,49 +101,94 @@ public class WeixinUtils {
         return 0 == j.getInt("errcode");
     }
 
-    public static <T extends RequestMessageBase> T parseMsgXml(String xml) {
-        try {
-//            Node n = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(xml.getBytes("UTF-8")));
-            JAXBContext jc = javax.xml.bind.JAXBContext.newInstance(RequestMessageBase.class);
-            Unmarshaller us = jc.createUnmarshaller();
-            RequestMessageBase rmb = (RequestMessageBase) us.unmarshal(new StringReader(xml));
-            //String msgType = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(xml.getBytes("UTF-8"))).getElementsByTagName("MsgType").item(0).getNodeValue();
-            if (null != rmb) {
-                switch (rmb.getMsgType()) {
-                    case RequestMessageBase.EVENT:
-                        break;
-                    case RequestMessageBase.IMAGE:
-                        break;
-                    case RequestMessageBase.LINK:
-                        break;
-                    case RequestMessageBase.LOCATION:
-                        break;
-                    case RequestMessageBase.SHORTVIDEO:
-                        break;
-                    case RequestMessageBase.VIDEO:
-                        break;
-                    case RequestMessageBase.TEXT:
+    public static RequestMessageBase parseMsgXml(String xml) {
+        RequestMessageBase rmb = Utils.xml2Bean(RequestMessageBase.class, xml);
+        if (null != rmb) {
+            switch (rmb.getMsgType()) {
+                case RequestMessageBase.EVENT:
+                    rmb = Utils.xml2Bean(RequestEventMsgBase.class, xml);
+                    break;
+                case RequestMessageBase.IMAGE:
+                    rmb = Utils.xml2Bean(RequestMessageImage.class, xml);
+                    break;
+                case RequestMessageBase.LINK:
+                    rmb = Utils.xml2Bean(RequestMessageURLink.class, xml);
+                    break;
+                case RequestMessageBase.LOCATION:
+                    rmb = Utils.xml2Bean(RequestMessageLocation.class, xml);
+                    break;
+                case RequestMessageBase.SHORTVIDEO:
+                    rmb = Utils.xml2Bean(RequestMessageShortVideo.class, xml);
+                    break;
+                case RequestMessageBase.VIDEO:
+                    rmb = Utils.xml2Bean(RequestMessageVideo.class, xml);
+                    break;
+                case RequestMessageBase.TEXT:
+                    return (RequestMessageText) Utils.xml2Bean(RequestMessageText.class, xml);
 
-                        break;
-                    case RequestMessageBase.VOICE:
-                        break;
+                case RequestMessageBase.VOICE:
+                    rmb = Utils.xml2Bean(RequestMessageVideo.class, xml);
+                    break;
 
-                }
             }
-            return (T) rmb;
-
-        } catch (JAXBException ex) {
-            Logger.getLogger(WeixinUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return rmb;
+
     }
 
+    /**
+     *
+     * @param <T>
+     * @param reqmsg
+     * @return
+     */
     public static <T extends RequestMessageBase> String handleReqMsg(T reqmsg) {
+        if (null == reqmsg) {
+            return "";
+        }
+        switch (reqmsg.getMsgType()) {
+            case RequestMessageBase.EVENT:
+
+                break;
+            default:
+                String f = reqmsg.getToUserName();
+                reqmsg.setToUserName(reqmsg.getFromUserName());
+                reqmsg.setFromUserName(f);
+                return Utils.bean2xml(reqmsg);
+//            case RequestMessageBase.IMAGE:
+//
+//                break;
+//            case RequestMessageBase.LINK:
+//
+//                break;
+//            case RequestMessageBase.LOCATION:
+//
+//                break;
+//            case RequestMessageBase.SHORTVIDEO:
+//
+//                break;
+//            case RequestMessageBase.VIDEO:
+//
+//                break;
+//            case RequestMessageBase.TEXT:
+//
+//                break;
+//            case RequestMessageBase.VOICE:
+//
+//                break;
+
+        }
+
         return "";
     }
 
-    public static  String handleReqMsgXML(String xmlMsg) {
-        return "";
+    /**
+     *
+     * @param xmlMsg
+     * @return
+     */
+    public static String handleReqMsgXML(String xmlMsg) {
+        return handleReqMsg(parseMsgXml(xmlMsg));
     }
 
     public static JsonObject convertStr2jsonObject(String str) {
