@@ -5,6 +5,10 @@
  */
 package org.peasant.weixin.msg;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * <p>
  * 地理位置消息</p>
@@ -12,6 +16,8 @@ package org.peasant.weixin.msg;
  *
  * @author raymond
  */
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class RequestMessageLocation extends RequestMessageBase {
 
     public static final String TYPE = RequestMessageBase.LOCATION;
@@ -22,6 +28,9 @@ public class RequestMessageLocation extends RequestMessageBase {
 
     private String scale;
     private String label;
+
+    public RequestMessageLocation() {
+    }
 
     public RequestMessageLocation(String location_X, String location_Y, String scale, String label, String toUserName, String fromUserName, long createTime, long msgId) {
         super(TYPE, toUserName, fromUserName, createTime, msgId);

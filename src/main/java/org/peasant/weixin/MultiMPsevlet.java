@@ -6,13 +6,13 @@
 package org.peasant.weixin;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.peasant.util.Utils;
+import org.peasant.util.web.ContentTypes;
 
 /**
  * 第一次接入微信公众平台，响应微信服务器发来的token验证，以接入平台。支持多个公众号同时接入， 使用{@link WeixinMPconfig}
@@ -57,10 +57,23 @@ public class MultiMPsevlet extends HttpServlet {
         String gid = req.getPathInfo();
         gid = gid.substring(1, gid.length());
         if (WeixinUtils.checkSignature(WeixinUtils.getToken(gid), req)) {
-            
+            req.setCharacterEncoding("UTF-8");
+
+            String ct = req.getContentType();
+            String result = "";
+            switch (ct) {
+                case ContentTypes.JSON:
+                    break;
+                case ContentTypes.XML:
+                case ContentTypes.TEXT_XML:
+                    result = WeixinUtils.handleReqMsgXML(Utils.getStreamString(req.getInputStream(), "UTF-8"));
+                    break;
+            }
+
             resp.setCharacterEncoding("UTF-8");
             //resp.getWriter().print(echostr);
-
+            resp.getWriter().write(result);
+            resp.getWriter().flush();
             resp.getWriter().close();
 
         }

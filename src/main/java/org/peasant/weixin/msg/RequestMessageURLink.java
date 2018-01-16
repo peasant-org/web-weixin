@@ -5,11 +5,17 @@
  */
 package org.peasant.weixin.msg;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * 链接消息 Title 消息标题 Description 消息描述 Url 消息链接
  *
  * @author raymond
  */
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class RequestMessageURLink extends RequestMessageBase {
 
     public static final String TYPE = LINK;
@@ -19,6 +25,9 @@ public class RequestMessageURLink extends RequestMessageBase {
     private String description;
 
     private String url;
+
+    public RequestMessageURLink() {
+    }
 
     public RequestMessageURLink(String title, String description, String url, String toUserName, String fromUserName, long createTime, long msgId) {
         super(TYPE, toUserName, fromUserName, createTime, msgId);

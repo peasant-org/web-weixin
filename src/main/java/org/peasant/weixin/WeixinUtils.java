@@ -17,9 +17,14 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.ParserConfigurationException;
 import org.peasant.util.web.HttpUtils;
 import org.peasant.util.web.ContentTypes;
+import org.peasant.weixin.msg.RequestMessageBase;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 /**
@@ -63,8 +68,6 @@ public class WeixinUtils {
         return HttpUtils.sendGet(MENU_DELETE_URL_PREFIX + getAccessToken(mpId), null, CHARSET);
     }
 
-
-
     public static boolean createMenuFor(String mpId) {
         return createMenu(WeixinMPconfig.getMPconfig(mpId).getAppId(), WeixinMPconfig.getMPconfig(mpId).getMenuJSON());
 
@@ -90,13 +93,49 @@ public class WeixinUtils {
         return 0 == j.getInt("errcode");
     }
 
-    public static void parseMsgXml(String xml) {
+    public static <T extends RequestMessageBase> T parseMsgXml(String xml) {
         try {
-            String msgType = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(xml.getBytes())).getElementsByTagName("MsgType").item(0).getNodeValue();
+//            Node n = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(xml.getBytes("UTF-8")));
+            JAXBContext jc = javax.xml.bind.JAXBContext.newInstance(RequestMessageBase.class);
+            Unmarshaller us = jc.createUnmarshaller();
+            RequestMessageBase rmb = (RequestMessageBase) us.unmarshal(new StringReader(xml));
+            //String msgType = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(xml.getBytes("UTF-8"))).getElementsByTagName("MsgType").item(0).getNodeValue();
+            if (null != rmb) {
+                switch (rmb.getMsgType()) {
+                    case RequestMessageBase.EVENT:
+                        break;
+                    case RequestMessageBase.IMAGE:
+                        break;
+                    case RequestMessageBase.LINK:
+                        break;
+                    case RequestMessageBase.LOCATION:
+                        break;
+                    case RequestMessageBase.SHORTVIDEO:
+                        break;
+                    case RequestMessageBase.VIDEO:
+                        break;
+                    case RequestMessageBase.TEXT:
 
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
+                        break;
+                    case RequestMessageBase.VOICE:
+                        break;
+
+                }
+            }
+            return (T) rmb;
+
+        } catch (JAXBException ex) {
             Logger.getLogger(WeixinUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
+    }
+
+    public static <T extends RequestMessageBase> String handleReqMsg(T reqmsg) {
+        return "";
+    }
+
+    public static  String handleReqMsgXML(String xmlMsg) {
+        return "";
     }
 
     public static JsonObject convertStr2jsonObject(String str) {

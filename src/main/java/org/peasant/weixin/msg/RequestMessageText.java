@@ -5,6 +5,10 @@
  */
 package org.peasant.weixin.msg;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * <p>
  * 文本消息</p>
@@ -12,12 +16,15 @@ package org.peasant.weixin.msg;
  *
  * @author raymond
  */
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class RequestMessageText extends RequestMessageBase {
 
     public static final String TYPE = TEXT;
 
     private String content;
-
+    public RequestMessageText() {
+    }
     public RequestMessageText(String content, String toUserName, String fromUserName, long createTime, long msgId) {
         super(TYPE, toUserName, fromUserName, createTime, msgId);
         this.content = content;

@@ -5,6 +5,10 @@
  */
 package org.peasant.weixin.msg;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * <p>
  * 多媒体消息基类 MediaId 。</p>
@@ -12,9 +16,14 @@ package org.peasant.weixin.msg;
  *
  * @author raymond
  */
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class RequestMessageMediaBase extends RequestMessageBase {
 
     private String mediaID;
+
+    public RequestMessageMediaBase() {
+    }
 
     protected RequestMessageMediaBase(String type, String mediaID, String toUserName, String fromUserName, long createTime, long msgId) {
         super(type, toUserName, fromUserName, createTime, msgId);

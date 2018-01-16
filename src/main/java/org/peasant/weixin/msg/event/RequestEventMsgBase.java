@@ -5,12 +5,17 @@
  */
 package org.peasant.weixin.msg.event;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.peasant.weixin.msg.RequestMessageBase;
 
 /**
  *
  * @author raymond
  */
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public abstract class RequestEventMsgBase extends RequestMessageBase {
 
     public final static String EVENT_CLICK = "CLICK";

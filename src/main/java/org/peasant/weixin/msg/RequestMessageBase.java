@@ -5,7 +5,10 @@
  */
 package org.peasant.weixin.msg;
 
-import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * <p>
@@ -18,9 +21,12 @@ import java.util.Date;
  * 公众平台官网的开发者中心处设置消息加密。开启加密后，用户发来的消息和开发者回复的消息都会被加密（但开发者通过客服
  * 接口等API调用形式向用户发送消息，则不受影响）。关于消息加解密的详细说明，请见“发送消息-被动回复消息加解密说明”。
  *
+ *
  * @author raymond
  */
-public abstract class RequestMessageBase {
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+public class RequestMessageBase {
 
     public static final String IMAGE = "image";
     public static final String TEXT = "text";
@@ -31,20 +37,23 @@ public abstract class RequestMessageBase {
     public static final String VOICE = "voice";
     public static final String EVENT = "event";
 
-    protected RequestMessageBase(String type, String toUserName, String fromUserName, long createTime, long msgId) {
+    public RequestMessageBase() {
+    }
+
+    public RequestMessageBase(String type, String toUserName, String fromUserName, long createTime, long msgId) {
         this.toUserName = toUserName;
         this.fromUserName = fromUserName;
         this.createTime = createTime;
         this.msgId = msgId;
         this.msgType = type;
     }
-
     private String toUserName;
     private String fromUserName;
     private long createTime;
-    private final String msgType;
+    private String msgType;
     private long msgId;
 
+    @XmlElement(name = "ToUserName")
     public String getToUserName() {
         return toUserName;
     }
@@ -53,6 +62,7 @@ public abstract class RequestMessageBase {
         this.toUserName = toUserName;
     }
 
+    @XmlElement(name = "FromUserName")
     public String getFromUserName() {
         return fromUserName;
     }
@@ -61,6 +71,7 @@ public abstract class RequestMessageBase {
         this.fromUserName = fromUserName;
     }
 
+    @XmlElement(name = "CreateTime")
     public long getCreateTime() {
         return createTime;
     }
@@ -69,10 +80,16 @@ public abstract class RequestMessageBase {
         this.createTime = CreateTime;
     }
 
+    @XmlElement(name = "MsgType")
     public String getMsgType() {
         return msgType;
     }
 
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
+    }
+
+    @XmlElement(name = "MsgId")
     public long getMsgId() {
         return msgId;
     }

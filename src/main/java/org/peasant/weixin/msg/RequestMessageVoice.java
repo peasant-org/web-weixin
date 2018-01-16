@@ -5,6 +5,10 @@
  */
 package org.peasant.weixin.msg;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * <p>
  * 语音消息</p>
@@ -12,11 +16,16 @@ package org.peasant.weixin.msg;
  *
  * @author raymond
  */
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class RequestMessageVoice extends RequestMessageMediaBase {
 
     public static final String TYPE = VOICE;
 
     private String recognition;
+
+    public RequestMessageVoice() {
+    }
 
     public RequestMessageVoice(String recognition, String format, String mediaID, String toUserName, String fromUserName, long createTime, long msgId) {
         super(TYPE, mediaID, toUserName, fromUserName, createTime, msgId);

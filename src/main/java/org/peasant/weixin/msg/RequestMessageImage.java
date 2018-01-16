@@ -5,13 +5,22 @@
  */
 package org.peasant.weixin.msg;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * <p>
  * 图片消息</p>
  *
  * @author raymond
  */
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class RequestMessageImage extends RequestMessageMediaBase {
+
+    public RequestMessageImage() {
+    }
 
     public RequestMessageImage(String url, String mediaID, String toUserName, String fromUserName, long createTime, long msgId) {
         super(TYPE, mediaID, toUserName, fromUserName, createTime, msgId);

@@ -5,11 +5,17 @@
  */
 package org.peasant.weixin.msg.event;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Latitude	地理位置纬度 Longitude	地理位置经度 Precision	地理位置精度
  *
  * @author raymond
  */
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class RequestEventMsgReportLocation extends RequestEventMsgBase {
 
     public RequestEventMsgReportLocation(double latitude, double longitude, String precision, String toUserName, String fromUserName, long createTime, long msgId) {
