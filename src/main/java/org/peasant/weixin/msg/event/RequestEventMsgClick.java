@@ -17,6 +17,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class RequestEventMsgClick extends RequestEventMsgBase {
 
+    public RequestEventMsgClick() {
+
+    }
+
     public RequestEventMsgClick(String toUserName, String fromUserName, long createTime, long msgId) {
         super(RequestEventMsgBase.EVENT_CLICK, toUserName, fromUserName, createTime, msgId);
     }

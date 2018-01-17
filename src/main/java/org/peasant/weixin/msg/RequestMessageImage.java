@@ -7,6 +7,7 @@ package org.peasant.weixin.msg;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -35,6 +36,7 @@ public class RequestMessageImage extends RequestMessageMediaBase {
      *
      * @return the value of url
      */
+    @XmlElement(name = "PicUrl")
     public String getUrl() {
         return url;
     }

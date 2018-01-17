@@ -7,6 +7,7 @@ package org.peasant.weixin.msg;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -41,6 +42,7 @@ public class RequestMessageURLink extends RequestMessageBase {
      *
      * @return the value of url
      */
+    @XmlElement(name = "Url")
     public String getUrl() {
         return url;
     }
@@ -59,6 +61,7 @@ public class RequestMessageURLink extends RequestMessageBase {
      *
      * @return the value of description
      */
+    @XmlElement(name = "Description")
     public String getDescription() {
         return description;
     }
@@ -77,6 +80,7 @@ public class RequestMessageURLink extends RequestMessageBase {
      *
      * @return the value of title
      */
+    @XmlElement(name = "Title")
     public String getTitle() {
         return title;
     }

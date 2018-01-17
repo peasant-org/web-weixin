@@ -7,6 +7,7 @@ package org.peasant.weixin.msg.event;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -40,6 +41,7 @@ public class RequestEventMsgView extends RequestEventMsgBase {
      *
      * @return the value of eventKey
      */
+    @XmlElement(name = "EventKey")
     public String getEventKey() {
         return eventKey;
     }

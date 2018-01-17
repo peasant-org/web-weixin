@@ -32,6 +32,11 @@ import org.peasant.weixin.msg.RequestMessageText;
 import org.peasant.weixin.msg.RequestMessageURLink;
 import org.peasant.weixin.msg.RequestMessageVideo;
 import org.peasant.weixin.msg.event.RequestEventMsgBase;
+import org.peasant.weixin.msg.event.RequestEventMsgClick;
+import org.peasant.weixin.msg.event.RequestEventMsgReportLocation;
+import org.peasant.weixin.msg.event.RequestEventMsgSubscribe;
+import org.peasant.weixin.msg.event.RequestEventMsgUnSubscribe;
+import org.peasant.weixin.msg.event.RequestEventMsgView;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
@@ -47,6 +52,7 @@ public class WeixinUtils {
     public static final String MENU_CREATE_URL_PREFIX = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
     public static final String MENU_GET_URL_PREFIX = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=";
     public static final String MENU_DELETE_URL_PREFIX = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=";
+    public static boolean debug = true;
 
     public static String getTokenByAppId(String appId) {
         return WeixinMPconfig.getMPconfigByAppId(appId).getToken();
@@ -101,12 +107,32 @@ public class WeixinUtils {
         return 0 == j.getInt("errcode");
     }
 
-    public static RequestMessageBase parseMsgXml(String xml) {
-        RequestMessageBase rmb = Utils.xml2Bean(RequestMessageBase.class, xml);
+    public static <T extends RequestMessageBase> T parseMsgXml(String xml) {
+        RequestMessageBase rmb = Utils.xml2Bean(RequestMessageText.class, xml);
         if (null != rmb) {
             switch (rmb.getMsgType()) {
                 case RequestMessageBase.EVENT:
-                    rmb = Utils.xml2Bean(RequestEventMsgBase.class, xml);
+                    RequestEventMsgBase rem = Utils.xml2Bean(RequestEventMsgClick.class, xml);
+                    switch (rem.getEventType()) {
+                        case RequestEventMsgBase.EVENT_CLICK:
+                            rem = Utils.xml2Bean(RequestEventMsgClick.class, xml);
+                            break;
+                        case RequestEventMsgBase.EVENT_LOCATION:
+                            rem = Utils.xml2Bean(RequestEventMsgReportLocation.class, xml);
+                            break;
+                        case RequestEventMsgBase.EVENT_SUBSCRIBE:
+                            rem = Utils.xml2Bean(RequestEventMsgSubscribe.class, xml);
+                            break;
+                        case RequestEventMsgBase.EVENT_UNSUBSCRIBE:
+                            rem = Utils.xml2Bean(RequestEventMsgUnSubscribe.class, xml);
+                            break;
+                        case RequestEventMsgBase.EVENT_VIEW:
+                            rem = Utils.xml2Bean(RequestEventMsgView.class, xml);
+                            break;
+                        default:
+                            rmb = rem;
+                    }
+                    rmb = rem;
                     break;
                 case RequestMessageBase.IMAGE:
                     rmb = Utils.xml2Bean(RequestMessageImage.class, xml);
@@ -124,7 +150,8 @@ public class WeixinUtils {
                     rmb = Utils.xml2Bean(RequestMessageVideo.class, xml);
                     break;
                 case RequestMessageBase.TEXT:
-                    return (RequestMessageText) Utils.xml2Bean(RequestMessageText.class, xml);
+                    rmb = Utils.xml2Bean(RequestMessageText.class, xml);
+                    break;
 
                 case RequestMessageBase.VOICE:
                     rmb = Utils.xml2Bean(RequestMessageVideo.class, xml);
@@ -132,7 +159,7 @@ public class WeixinUtils {
 
             }
         }
-        return rmb;
+        return (T) rmb;
 
     }
 
@@ -146,40 +173,42 @@ public class WeixinUtils {
         if (null == reqmsg) {
             return "";
         }
+        String r = "";
         switch (reqmsg.getMsgType()) {
             case RequestMessageBase.EVENT:
+                r = Utils.bean2xml(new RequestMessageText(reqmsg.getMsgType() + ":" + ((RequestEventMsgBase) reqmsg).getEventType(), reqmsg.getFromUserName(), reqmsg.getToUserName(), System.currentTimeMillis(), 0));
+                break;
+            case RequestMessageBase.IMAGE:
+                r = Utils.bean2xml(new RequestMessageText(reqmsg.getMsgType(), reqmsg.getFromUserName(), reqmsg.getToUserName(), System.currentTimeMillis(), 0));
+                break;
+            case RequestMessageBase.LINK:
+                r = Utils.bean2xml(new RequestMessageText(reqmsg.getMsgType(), reqmsg.getFromUserName(), reqmsg.getToUserName(), System.currentTimeMillis(), 0));
 
                 break;
-            default:
-                String f = reqmsg.getToUserName();
-                reqmsg.setToUserName(reqmsg.getFromUserName());
-                reqmsg.setFromUserName(f);
-                return Utils.bean2xml(reqmsg);
-//            case RequestMessageBase.IMAGE:
-//
-//                break;
-//            case RequestMessageBase.LINK:
-//
-//                break;
-//            case RequestMessageBase.LOCATION:
-//
-//                break;
-//            case RequestMessageBase.SHORTVIDEO:
-//
-//                break;
-//            case RequestMessageBase.VIDEO:
-//
-//                break;
-//            case RequestMessageBase.TEXT:
-//
-//                break;
-//            case RequestMessageBase.VOICE:
-//
-//                break;
+            case RequestMessageBase.LOCATION:
+                r = Utils.bean2xml(new RequestMessageText(reqmsg.getMsgType(), reqmsg.getFromUserName(), reqmsg.getToUserName(), System.currentTimeMillis(), 0));
+
+                break;
+            case RequestMessageBase.SHORTVIDEO:
+                r = Utils.bean2xml(new RequestMessageText(reqmsg.getMsgType(), reqmsg.getFromUserName(), reqmsg.getToUserName(), System.currentTimeMillis(), 0));
+
+                break;
+            case RequestMessageBase.VIDEO:
+                r = Utils.bean2xml(new RequestMessageText(reqmsg.getMsgType(), reqmsg.getFromUserName(), reqmsg.getToUserName(), System.currentTimeMillis(), 0));
+
+                break;
+            case RequestMessageBase.TEXT:
+                r = Utils.bean2xml(new RequestMessageText(reqmsg.getMsgType(), reqmsg.getFromUserName(), reqmsg.getToUserName(), System.currentTimeMillis(), 0));
+
+                break;
+            case RequestMessageBase.VOICE:
+                r = Utils.bean2xml(new RequestMessageText(reqmsg.getMsgType(), reqmsg.getFromUserName(), reqmsg.getToUserName(), System.currentTimeMillis(), 0));
+
+                break;
 
         }
 
-        return "";
+        return r;
     }
 
     /**

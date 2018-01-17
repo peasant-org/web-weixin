@@ -7,6 +7,7 @@ package org.peasant.weixin.msg;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author raymond
  */
-@XmlRootElement(name = "xml")
+//@XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class RequestMessageMediaBase extends RequestMessageBase {
 
@@ -35,6 +36,7 @@ public class RequestMessageMediaBase extends RequestMessageBase {
      *
      * @return the value of mediaID
      */
+    @XmlElement(name = "MediaId")
     public String getMediaID() {
         return mediaID;
     }

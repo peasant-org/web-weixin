@@ -53,6 +53,22 @@ public class AccessTokenCentralPool {
         return at;
     }
 
+    public static String refreshAccessToken(IWeixinMPConfig cfg) {
+        String at = null;
+
+        Object[] rs = fecthAccessToken(cfg);
+        if (null != rs) {
+            String oat = cache.put(cfg.getAppId(), (String) rs[0]);
+            if (null == oat) {
+                long ts = ((Integer) rs[1]).longValue();
+                refreshTimer.schedule(new AccessTokenRefresher(cfg), ts * 1000L - 5000L, ts * 1000L - 5000L);
+            }
+            at = (String) rs[0];
+        }
+
+        return at;
+    }
+
     /**
      * 向微信服务器获取AccessToken,此方法线程安全
      *

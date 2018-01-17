@@ -7,6 +7,7 @@ package org.peasant.weixin.msg.event;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -44,6 +45,7 @@ public class RequestEventMsgReportLocation extends RequestEventMsgBase {
      *
      * @return the value of precision
      */
+    @XmlElement(name = "Precision")
     public String getPrecision() {
         return precision;
     }
@@ -62,6 +64,7 @@ public class RequestEventMsgReportLocation extends RequestEventMsgBase {
      *
      * @return the value of longitude
      */
+    @XmlElement(name = "Longitude")
     public double getLongitude() {
         return longitude;
     }
@@ -80,6 +83,7 @@ public class RequestEventMsgReportLocation extends RequestEventMsgBase {
      *
      * @return the value of latitude
      */
+    @XmlElement(name = "Latitude")
     public double getLatitude() {
         return latitude;
     }

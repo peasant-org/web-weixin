@@ -7,6 +7,7 @@ package org.peasant.weixin.msg;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -38,6 +39,7 @@ public class RequestMessageVoice extends RequestMessageMediaBase {
      *
      * @return the value of recognition
      */
+    @XmlElement(name = "Recognition")
     public String getRecognition() {
         return recognition;
     }
@@ -58,6 +60,7 @@ public class RequestMessageVoice extends RequestMessageMediaBase {
      *
      * @return the value of format
      */
+    @XmlElement(name = "Format")
     public String getFormat() {
         return format;
     }

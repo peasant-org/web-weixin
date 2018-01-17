@@ -7,6 +7,7 @@ package org.peasant.weixin.msg;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -34,6 +35,7 @@ public class RequestMessageShortVideo extends RequestMessageMediaBase {
      *
      * @return the value of thumbMediaId
      */
+    @XmlElement(name = "getThumbMediaId")
     public String getThumbMediaId() {
         return thumbMediaId;
     }

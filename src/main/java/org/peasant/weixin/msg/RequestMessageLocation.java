@@ -7,6 +7,7 @@ package org.peasant.weixin.msg;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -45,6 +46,7 @@ public class RequestMessageLocation extends RequestMessageBase {
      *
      * @return the value of label
      */
+    @XmlElement(name = "Label")
     public String getLabel() {
         return label;
     }
@@ -63,6 +65,7 @@ public class RequestMessageLocation extends RequestMessageBase {
      *
      * @return the value of scale
      */
+    @XmlElement(name = "Scale")
     public String getScale() {
         return scale;
     }
@@ -81,6 +84,7 @@ public class RequestMessageLocation extends RequestMessageBase {
      *
      * @return the value of location_X
      */
+    @XmlElement(name = "Location_X")
     public String getLocation_X() {
         return location_X;
     }
@@ -99,6 +103,7 @@ public class RequestMessageLocation extends RequestMessageBase {
      *
      * @return the value of location_Y
      */
+    @XmlElement(name = "Location_Y")
     public String getLocation_Y() {
         return location_Y;
     }

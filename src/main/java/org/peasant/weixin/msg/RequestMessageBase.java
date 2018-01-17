@@ -24,18 +24,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author raymond
  */
-@XmlRootElement(name = "xml")
+//@XmlRootElement(name = "xml") //不能使用此注释类，否则同name的子类无法被Unmarsheller恢复
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
-public class RequestMessageBase {
-
-    public static final String IMAGE = "image";
-    public static final String TEXT = "text";
-    public static final String SHORTVIDEO = "shortvideo";
-    public static final String VIDEO = "video";
-    public static final String LOCATION = "location";
-    public static final String LINK = "link";
-    public static final String VOICE = "voice";
-    public static final String EVENT = "event";
+public class RequestMessageBase extends MessageBase {
 
     public RequestMessageBase() {
     }
@@ -47,47 +38,7 @@ public class RequestMessageBase {
         this.msgId = msgId;
         this.msgType = type;
     }
-    private String toUserName;
-    private String fromUserName;
-    private long createTime;
-    private String msgType;
     private long msgId;
-
-    @XmlElement(name = "ToUserName")
-    public String getToUserName() {
-        return toUserName;
-    }
-
-    public void setToUserName(String toUserName) {
-        this.toUserName = toUserName;
-    }
-
-    @XmlElement(name = "FromUserName")
-    public String getFromUserName() {
-        return fromUserName;
-    }
-
-    public void setFromUserName(String fromUserName) {
-        this.fromUserName = fromUserName;
-    }
-
-    @XmlElement(name = "CreateTime")
-    public long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(long CreateTime) {
-        this.createTime = CreateTime;
-    }
-
-    @XmlElement(name = "MsgType")
-    public String getMsgType() {
-        return msgType;
-    }
-
-    public void setMsgType(String msgType) {
-        this.msgType = msgType;
-    }
 
     @XmlElement(name = "MsgId")
     public long getMsgId() {

@@ -7,6 +7,7 @@ package org.peasant.weixin.msg.event;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.peasant.weixin.msg.RequestMessageBase;
 
@@ -14,9 +15,12 @@ import org.peasant.weixin.msg.RequestMessageBase;
  *
  * @author raymond
  */
-@XmlRootElement(name = "xml")
+//@XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public abstract class RequestEventMsgBase extends RequestMessageBase {
+
+    public RequestEventMsgBase() {
+    }
 
     public final static String EVENT_CLICK = "CLICK";
     public final static String EVENT_VIEW = "VIEW";
@@ -38,6 +42,7 @@ public abstract class RequestEventMsgBase extends RequestMessageBase {
      *
      * @return the value of eventType
      */
+    @XmlElement(name="Event")
     public String getEventType() {
         return eventType;
     }
