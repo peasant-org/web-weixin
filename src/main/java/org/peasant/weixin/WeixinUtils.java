@@ -9,6 +9,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.time.Clock;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -24,6 +26,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.peasant.util.Utils;
 import org.peasant.util.web.HttpUtils;
 import org.peasant.util.web.ContentTypes;
+import org.peasant.weixin.msg.Article;
+import static org.peasant.weixin.msg.MessageBase.*;
+import org.peasant.weixin.msg.PictureTextMsg;
 import org.peasant.weixin.msg.RequestMessageBase;
 import org.peasant.weixin.msg.RequestMessageImage;
 import org.peasant.weixin.msg.RequestMessageLocation;
@@ -48,7 +53,7 @@ public class WeixinUtils {
 
     public static final String WEIXIN_API_URL = "https://api.weixin.qq.com/cgi-bin";
     public static final String ACCESSTOKEN_API_URL = "https://api.weixin.qq.com/cgi-bin/token";
-    public static final String CHARSET = "UTF-8";
+    public static final String CHARSET = StandardCharsets.UTF_8.name();
     public static final String MENU_CREATE_URL_PREFIX = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
     public static final String MENU_GET_URL_PREFIX = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=";
     public static final String MENU_DELETE_URL_PREFIX = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=";
@@ -70,29 +75,29 @@ public class WeixinUtils {
         return AccessTokenCentralPool.getAccessToken(WeixinMPconfig.getMPconfig(mpId));
     }
 
-    public static String getMenuFor(String mpId) {
+    public static String getMenuFromMPserver4MPid(String mpId) {
         return HttpUtils.sendGet(MENU_CREATE_URL_PREFIX + getAccessToken(mpId), null, CHARSET);
     }
 
-    public static String getMenuForAppId(String appId) {
+    public static String getMenuFromMPserver4AppId(String appId) {
         return HttpUtils.sendGet(MENU_CREATE_URL_PREFIX + getAccessTokenByAppID(appId), null, CHARSET);
     }
 
-    public static String deleteMenuFor(String mpId) {
+    public static String deleteMenuInMPserver4MPid(String mpId) {
         return HttpUtils.sendGet(MENU_DELETE_URL_PREFIX + getAccessToken(mpId), null, CHARSET);
     }
 
-    public static boolean createMenuFor(String mpId) {
-        return createMenu(WeixinMPconfig.getMPconfig(mpId).getAppId(), WeixinMPconfig.getMPconfig(mpId).getMenuJSON());
+    public static boolean createMenuInMPserver4For(String mpId) {
+        return createMenuInMPserver(WeixinMPconfig.getMPconfig(mpId).getAppId(), WeixinMPconfig.getMPconfig(mpId).getMenuJSON());
 
     }
 
-    public static boolean createMenu(String appId) {
+    public static boolean createMenuInMPserver4AppId(String appId) {
 
-        return createMenu(appId, WeixinMPconfig.getMPconfigByAppId(appId).getMenuJSON());
+        return createMenuInMPserver(appId, WeixinMPconfig.getMPconfigByAppId(appId).getMenuJSON());
     }
 
-    public static boolean createMenu(String appId, String jsonmenu) {
+    public static boolean createMenuInMPserver(String appId, String jsonmenu) {
         Map<String, String> ps = new HashMap<>();
         ps.put("Content-Type", ContentTypes.JSON);
 
@@ -102,7 +107,7 @@ public class WeixinUtils {
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(WeixinUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
-        JsonObject j = convertStr2jsonObject(r);
+        JsonObject j = convertJsonStr2jsonObject(r);
         Logger.getLogger(WeixinUtils.class.getName()).log(Level.INFO, "为APPID:{0}创建菜单, 执行结果:{1}", new Object[]{appId, j.toString()});
         return 0 == j.getInt("errcode");
     }
@@ -176,7 +181,18 @@ public class WeixinUtils {
         String r = "";
         switch (reqmsg.getMsgType()) {
             case RequestMessageBase.EVENT:
-                r = Utils.bean2xml(new RequestMessageText(reqmsg.getMsgType() + ":" + ((RequestEventMsgBase) reqmsg).getEventType(), reqmsg.getFromUserName(), reqmsg.getToUserName(), System.currentTimeMillis(), 0));
+                RequestEventMsgBase rem = (RequestEventMsgBase) reqmsg;
+                switch (rem.getEventType()) {
+                    case RequestEventMsgBase.EVENT_CLICK:
+                        PictureTextMsg ptm = new PictureTextMsg();
+                        ptm.setCreateTime(Clock.systemUTC().millis())
+                                .setFromUserName(reqmsg.getToUserName())
+                                .setToUserName(reqmsg.getFromUserName())
+                                .setMsgType(RESPONSE_MSG_NEWS);
+                        ptm.articles.add(new Article("寄快递", "http://dawnrise.cn/express/img/newexpress.jpg", "http://dawnrise.cn/express/delivernew.jsp?customer="+ptm.getToUserName(), "点击进入面对面寄件，下订单"));
+                        r = Utils.bean2xml(ptm);
+                        break;
+                }
                 break;
             case RequestMessageBase.IMAGE:
                 r = Utils.bean2xml(new RequestMessageText(reqmsg.getMsgType(), reqmsg.getFromUserName(), reqmsg.getToUserName(), System.currentTimeMillis(), 0));
@@ -220,7 +236,7 @@ public class WeixinUtils {
         return handleReqMsg(parseMsgXml(xmlMsg));
     }
 
-    public static JsonObject convertStr2jsonObject(String str) {
+    public static JsonObject convertJsonStr2jsonObject(String str) {
         if (null == str) {
             return null;
         }

@@ -9,8 +9,9 @@ package org.peasant.weixin.msg;
  * 回复消息的基类
  *
  * @author raymond
+ * @param <T>
  */
-public class ResponseMessageBase extends MessageBase {
+public class ResponseMessageBase<T extends ResponseMessageBase> extends MessageBase<T> {
 
     public ResponseMessageBase() {
     }

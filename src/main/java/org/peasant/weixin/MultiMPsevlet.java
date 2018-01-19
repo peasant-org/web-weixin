@@ -46,7 +46,7 @@ public class MultiMPsevlet extends HttpServlet {
                 resp.getWriter().close();
 
             }
-            WeixinUtils.createMenuFor(gid);
+            WeixinUtils.createMenuInMPserver4For(gid);
         }
 
     }

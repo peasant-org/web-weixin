@@ -11,8 +11,10 @@ import javax.xml.bind.annotation.XmlElement;
  * 所有消息的基类，包括推送的消息，回复用户（响应微信服务器推送）的消息
  *
  * @author raymond
+ * @param <T>
  */
-public class MessageBase {
+
+public class MessageBase<T extends MessageBase> {
 
     public static final String IMAGE = "image";
     public static final String TEXT = "text";
@@ -22,6 +24,7 @@ public class MessageBase {
     public static final String LINK = "link";
     public static final String VOICE = "voice";
     public static final String EVENT = "event";
+    public static final String RESPONSE_MSG_NEWS = "news";
     protected String toUserName;
     protected String fromUserName;
     protected long createTime;
@@ -31,12 +34,14 @@ public class MessageBase {
     }
 
     @XmlElement(name = "ToUserName")
+  
     public String getToUserName() {
         return toUserName;
     }
 
-    public void setToUserName(String toUserName) {
+    public T setToUserName(String toUserName) {
         this.toUserName = toUserName;
+        return (T) this;
     }
 
     @XmlElement(name = "FromUserName")
@@ -44,8 +49,9 @@ public class MessageBase {
         return fromUserName;
     }
 
-    public void setFromUserName(String fromUserName) {
+    public T setFromUserName(String fromUserName) {
         this.fromUserName = fromUserName;
+        return (T) this;
     }
 
     @XmlElement(name = "CreateTime")
@@ -53,8 +59,9 @@ public class MessageBase {
         return createTime;
     }
 
-    public void setCreateTime(long CreateTime) {
+    public T setCreateTime(long CreateTime) {
         this.createTime = CreateTime;
+        return (T) this;
     }
 
     @XmlElement(name = "MsgType")
@@ -62,8 +69,9 @@ public class MessageBase {
         return msgType;
     }
 
-    public void setMsgType(String msgType) {
+    public T setMsgType(String msgType) {
         this.msgType = msgType;
+        return (T) this;
     }
 
 }

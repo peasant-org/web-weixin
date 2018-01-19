@@ -23,10 +23,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  *
  * @author raymond
+ * @param <T>
  */
 //@XmlRootElement(name = "xml") //不能使用此注释类，否则同name的子类无法被Unmarsheller恢复
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
-public class RequestMessageBase extends MessageBase {
+public class RequestMessageBase<T extends RequestMessageBase> extends MessageBase<T> {
 
     public RequestMessageBase() {
     }
@@ -45,8 +46,9 @@ public class RequestMessageBase extends MessageBase {
         return msgId;
     }
 
-    public void setMsgId(long MsgId) {
+    public RequestMessageBase setMsgId(long MsgId) {
         this.msgId = MsgId;
+        return this;
     }
 
 }

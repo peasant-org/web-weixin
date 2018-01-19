@@ -14,10 +14,11 @@ import org.peasant.weixin.msg.RequestMessageBase;
 /**
  *
  * @author raymond
+ * @param <T>
  */
 //@XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
-public abstract class RequestEventMsgBase extends RequestMessageBase {
+public abstract class RequestEventMsgBase<T extends RequestEventMsgBase> extends RequestMessageBase<T> {
 
     public RequestEventMsgBase() {
     }
@@ -42,7 +43,7 @@ public abstract class RequestEventMsgBase extends RequestMessageBase {
      *
      * @return the value of eventType
      */
-    @XmlElement(name="Event")
+    @XmlElement(name = "Event")
     public String getEventType() {
         return eventType;
     }

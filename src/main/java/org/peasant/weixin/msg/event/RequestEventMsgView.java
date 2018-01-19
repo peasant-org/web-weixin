@@ -17,7 +17,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
-public class RequestEventMsgView extends RequestEventMsgBase {
+public class RequestEventMsgView extends RequestEventMsgBase<RequestEventMsgView> {
+
+    public RequestEventMsgView() {
+    }
 
     /**
      *
@@ -50,9 +53,11 @@ public class RequestEventMsgView extends RequestEventMsgBase {
      * Set the value of eventKey
      *
      * @param eventKey new value of eventKey
+     * @return 
      */
-    public void setEventKey(String eventKey) {
+    public RequestEventMsgView setEventKey(String eventKey) {
         this.eventKey = eventKey;
+        return this;
     }
 
 }
